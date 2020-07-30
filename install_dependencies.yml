@@ -1,0 +1,17 @@
+---
+- name: Playbook de instalação de dependências
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    collections:
+      - rodrigobrim.packer_vagrant_images
+
+  tasks:
+    - name: Baixa a lista de collections
+      shell: ansible-galaxy collection install {{ collection }} --force
+      register: collection_install
+      loop: "{{ collections }}"
+      loop_control:
+        loop_var: collection
+      changed_when: "'Skipping' is not in collection_install.stdout"

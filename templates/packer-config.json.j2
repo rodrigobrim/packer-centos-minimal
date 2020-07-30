@@ -1,0 +1,68 @@
+{
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {% raw %}{{.Vars}}{% endraw %} sudo -S -E sh -eux '{% raw %}{{.Path}}{% endraw %}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "{{ script_dir }}/update.sh",
+        "{{ script_dir }}/install_ansible.sh",
+        "{{ script_dir }}/motd.sh",
+        "{{ script_dir }}/sshd.sh",
+        "{{ script_dir }}/networking.sh",
+        "{{ script_dir }}/vagrant.sh",
+        "{{ script_dir }}/virtualbox.sh"
+      ]
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "{{ playbooks_dir }}/playbook.yml"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {% raw %}{{.Vars}}{% endraw %} sudo -S -E sh -eux '{% raw %}{{.Path}}{% endraw %}'",
+      "scripts": [
+        "{{ script_dir }}/cleanup.sh",
+        "{{ script_dir }}/minimize.sh"
+      ]
+    }
+  ],
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<tab> text ks=http://{% raw %}{{ .HTTPIP }}:{{ .HTTPPort }}{% endraw %}/{{ ks_path }}<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "cpus": {{ cpus }},
+      "disk_size": {{ disk_size }},
+      "guest_os_type": "RedHat_64",
+      "headless": {{ headless }},
+      "http_directory": "{{ http_directory }}",
+      "iso_urls": {{ iso_urls | to_nice_json }},
+      "iso_checksum": "{{ iso_checksum }}",
+      "memory": {{ memory }},
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "1800s",
+      "shutdown_command": "echo 'vagrant'|sudo -S /sbin/halt -h -p",
+      "guest_additions_path": "VBoxGuestAdditions_{% raw %}{{.Version}}{% endraw %}.iso",
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "{{ box_basename }}"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "output": "{{ build_directory }}/{{ box_basename }}.{% raw %}{{.Provider}}{% endraw %}.box",
+        "type": "vagrant"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "{{ virtualbox_build_username }}/{{ box_name }}",
+        "version": "{{ version }}"
+      }
+    ]
+  ]
+}

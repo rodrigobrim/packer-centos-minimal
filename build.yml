@@ -6,7 +6,7 @@
     - rodrigobrim.packer_vagrant_images
 
   roles:
-    - role: virtualbox_build
+    - role: rodrigobrim.packer_vagrant_images.virtualbox_build
       vars:
         virtualbox_build_path: "{{ ansible_env.PWD }}"
         virtualbox_build_username: "{{ vagrant_cloud_username }}"

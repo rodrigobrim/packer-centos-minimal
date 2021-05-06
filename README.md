@@ -1,23 +1,24 @@
 # packer-centos-minimal
 
-## Vagrant Box do Centos 8 minimal para construir com o Packer
+## Centos 8 minimal Vagrant Box packer automation
 
-**Versão do CentOS utilizada**: 8.2 (2004)
+** CentOS version**: 8.3 (2011)
 
-## Requisitos
+## Requirements
 
-Ansible (testado no 2.9)
-Packer (testado no 1.6)
-Vagrant (testado no 2.2.9)
-Virtualbox (testado no 6.1.12)
+Ansible (testado no 2.10)
+Packer (testado no 1.7)
+Vagrant (testado no 2.2.15)
+Virtualbox (testado no 6.1.22)
+Export access_token variable (generate it in: https://app.vagrantup.com/settings/security)
 
-## Para fazer o build, execute:
+## To build, do it:
 
 ```
-ansible-playbook install_dependencies.yml build.yml
+ansible-playbook install_dependencies.yml build.yml -e access_token=${access_token}
 ```
 
-## Customizações
+## Customizations
 
 [Altere o template jinja](templates/packer-config.json.j2)
 [Nomes / variáveis](config.yml)

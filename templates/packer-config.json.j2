@@ -61,7 +61,8 @@
       {
         "type": "vagrant-cloud",
         "box_tag": "{{ virtualbox_build_username }}/{{ box_name }}",
-        "version": "{{ version }}"
+        "version": "{{ image_version }}",
+        "access_token": "{{ access_token }}"
       }
     ]
   ]

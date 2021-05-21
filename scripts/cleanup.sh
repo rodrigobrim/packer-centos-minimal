@@ -23,12 +23,12 @@ done
 # truncate any logs that have built up during the install
 find /var/log -type f -exec truncate --size=0 {} \;
 
-# Remove Ansible and its dependencies.
-pip3 install pip-autoremove
-ln -s /usr/bin/pip3 /usr/bin/pip
-/usr/local/bin/pip-autoremove ansible -y
-rm -f /usr/bin/pip
-pip3 uninstall pip-autoremove -y
+# # Remove Ansible and its dependencies.
+# pip3 install pip-autoremove
+# ln -s /usr/bin/pip3 /usr/bin/pip
+# /usr/local/bin/pip-autoremove ansible -y
+# rm -f /usr/bin/pip
+# pip3 uninstall pip-autoremove -y
 
 # we try to remove these in the ks file, but they're still there
 # in the builds so let's remove them here to be sure :shrug:
